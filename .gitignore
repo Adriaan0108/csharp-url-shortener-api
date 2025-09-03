@@ -1,0 +1,52 @@
+# Ignore all appsettings files
+appsettings.json
+
+launchSettings.json
+
+# Rider
+.idea/
+riderModule.iml
+/_ReSharper.Caches/
+
+# VS Code
+.vscode/
+
+# User-specific files
+*.suo
+*.user
+*.userosscache
+*.sln.docstates
+
+# Build results
+[Bb]in/
+[Oo]bj/
+[Dd]ebug*/
+[Rr]elease*/
+x64/
+x86/
+build/
+bld/
+[Oo]ut/
+msbuild.log
+msbuild.err
+msbuild.wrn
+
+# NuGet
+*.nupkg
+packages/
+project.lock.json
+
+# OS-specific files
+.DS_Store
+*.swp
+*.*~
+
+# Python
+*.pyc
+
+# Visual Studio
+.vs/
+
+# Other
+bin/
+obj/
