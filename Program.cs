@@ -4,6 +4,7 @@ using csharp_url_shortener_api.Classes;
 using csharp_url_shortener_api.Data;
 using csharp_url_shortener_api.Interfaces.Repositories;
 using csharp_url_shortener_api.Interfaces.Services;
+using csharp_url_shortener_api.Middleware;
 using csharp_url_shortener_api.Repositories;
 using csharp_url_shortener_api.Services;
 using Microsoft.EntityFrameworkCore;
@@ -82,6 +83,8 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 
 app.UseAuthorization();
+
+app.UseMiddleware<ExceptionHandlingMiddleware>();
 
 app.MapControllers();
 
