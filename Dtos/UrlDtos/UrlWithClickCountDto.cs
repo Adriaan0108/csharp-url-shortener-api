@@ -7,6 +7,8 @@ public class UrlWithClickCountDto
     
     public string ShortUrl { get; set; }
     
+    public int CreatedBy { get; set; }
+    
     public int Id  { get; set; }
     
     public DateTime CreatedAt  { get; set; }

@@ -28,4 +28,11 @@ public class UrlRepository : IUrlRepository
             .Include(u => u.UrlClicks)
             .ToListAsync();
     }
+    
+    public async Task<IList<Url>> GetAllUrls()
+    {
+        return await _context.Urls
+            .Include(u => u.UrlClicks)
+            .ToListAsync();
+    }
 }

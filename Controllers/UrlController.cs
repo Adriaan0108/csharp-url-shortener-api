@@ -33,4 +33,13 @@ public class UrlController : ControllerBase
 
         return Ok(urls);
     }
+    
+    [HttpGet("all")]
+    [Authorize]
+    public async Task<IActionResult> GetAllUrls()
+    {
+        var urls = await _urlService.GetAllUrls();
+
+        return Ok(urls);
+    }
 }

@@ -7,4 +7,6 @@ public interface IUrlRepository
     Task<Url> CreateUrl(Url url);
 
     Task<IList<Url>> GetUserCreatedUrls(int userId);
+
+    Task<IList<Url>> GetAllUrls();
 }

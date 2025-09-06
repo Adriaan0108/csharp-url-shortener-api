@@ -8,4 +8,6 @@ public interface IUrlService
     Task<Url> CreateUrl(CreateUrlDto createUrlDto);
 
     Task<IList<UrlWithClickCountDto>> GetUserCreatedUrls();
+
+    Task<IList<UrlWithClickCountDto>> GetAllUrls();
 }

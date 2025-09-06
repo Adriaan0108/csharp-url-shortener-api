@@ -36,13 +36,30 @@ public class UrlService : IUrlService
         var userId = _currentUserService.GetCurrentUserId();
         var urls = await  _urlRepository.GetUserCreatedUrls(userId);
         
-        var result = urls.Select(u => new UrlWithClickCountDto
-        {
-            Id = u.Id,
-            OriginalUrl = u.OriginalUrl,
-            ShortUrl = u.ShortUrl,
-            ClickCount = u.UrlClicks?.Count ?? 0
-        }).ToList();
+        var result = urls
+            .Select(u =>
+            {
+                var dto = MappingProfile.ToUrlWithClickCountDto(u); // map base properties
+                dto.ClickCount = u.UrlClicks?.Count ?? 0;           // manually set ClickCount
+                return dto;
+            })
+            .ToList();
+
+        return result;
+    }
+    
+    public async Task<IList<UrlWithClickCountDto>> GetAllUrls()
+    {
+        var urls = await  _urlRepository.GetAllUrls();
+        
+        var result = urls
+            .Select(u =>
+            {
+                var dto = MappingProfile.ToUrlWithClickCountDto(u); 
+                dto.ClickCount = u.UrlClicks?.Count ?? 0;           
+                return dto;
+            })
+            .ToList();
 
         return result;
     }
