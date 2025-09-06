@@ -25,6 +25,15 @@ public class UrlController : ControllerBase
         return Ok(url);
     }
     
+    [HttpPost("click")]
+    [Authorize]
+    public async Task<IActionResult> CreateUrlClick([FromBody] CreateUrlClickDto createUrlClickDto)
+    {
+        var urlClick = await _urlService.CreateUrlClick(createUrlClickDto);
+
+        return Ok(urlClick);
+    }
+    
     [HttpGet]
     [Authorize]
     public async Task<IActionResult> GetUserCreatedUrls()

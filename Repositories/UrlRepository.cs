@@ -20,6 +20,13 @@ public class UrlRepository : IUrlRepository
         await _context.SaveChangesAsync();
         return url;
     }
+    
+    public async Task<UrlClick> CreateUrlClick(UrlClick urlClick)
+    {
+        await _context.UrlClicks.AddAsync(urlClick);
+        await _context.SaveChangesAsync();
+        return urlClick;
+    }
 
     public async Task<IList<Url>> GetUserCreatedUrls(int userId)
     {

@@ -6,6 +6,8 @@ namespace csharp_url_shortener_api.Interfaces.Services;
 public interface IUrlService
 {
     Task<Url> CreateUrl(CreateUrlDto createUrlDto);
+    
+    Task<UrlClick> CreateUrlClick(CreateUrlClickDto createUrlClickDto);
 
     Task<IList<UrlWithClickCountDto>> GetUserCreatedUrls();
 

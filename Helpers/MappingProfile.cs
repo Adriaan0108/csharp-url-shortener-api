@@ -16,4 +16,6 @@ public static partial class MappingProfile
     public static partial Url ToUrl(CreateUrlDto createUrlDto);
     
     public static partial UrlWithClickCountDto ToUrlWithClickCountDto(Url url);
+    
+    public static partial UrlClick ToUrlClick(CreateUrlClickDto  createUrlClickDto);
 }

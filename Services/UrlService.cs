@@ -30,6 +30,18 @@ public class UrlService : IUrlService
        
        return await _urlRepository.CreateUrl(url);
     }
+    
+    public async Task<UrlClick> CreateUrlClick(CreateUrlClickDto createUrlClickDto)
+    {
+        var urlClick = MappingProfile.ToUrlClick(createUrlClickDto);
+
+        var userId = _currentUserService.GetCurrentUserId();
+       
+        urlClick.UserId = userId;
+        urlClick.ProfitSharingRuleId = 1; // hardcode for now
+       
+        return await _urlRepository.CreateUrlClick(urlClick);
+    }
 
     public async Task<IList<UrlWithClickCountDto>> GetUserCreatedUrls()
     {
