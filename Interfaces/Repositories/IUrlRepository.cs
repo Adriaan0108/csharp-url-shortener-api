@@ -11,4 +11,6 @@ public interface IUrlRepository
     Task<IList<Url>> GetAllUrls();
     
     Task<UrlClick> CreateUrlClick(UrlClick urlClick);
+
+    Task<IList<UrlClick>> GetUrlClicks(int urlId);
 }

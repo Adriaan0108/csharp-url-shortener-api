@@ -28,6 +28,13 @@ public class UrlRepository : IUrlRepository
         return urlClick;
     }
 
+    public async Task<IList<UrlClick>> GetUrlClicks(int urlId)
+    {
+        return await _context.UrlClicks
+            .Where(u => u.UrlId == urlId)
+            .ToListAsync();
+    }
+
     public async Task<IList<Url>> GetUserCreatedUrls(int userId)
     {
         return await _context.Urls

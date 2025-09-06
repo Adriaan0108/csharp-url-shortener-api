@@ -39,6 +39,12 @@ public class UrlService : IUrlService
        
         urlClick.UserId = userId;
         urlClick.ProfitSharingRuleId = 1; // hardcode for now
+
+        var clicks = await _urlRepository.GetUrlClicks(createUrlClickDto.UrlId);
+
+        // future idea - fetch ProfitSharingRuleId (by last created or active state) and pass its values into CalculateUrlClickAmountEarned
+        var amountEarned = AmountEarnedHelper.CalculateUrlClickAmountEarned(clicks.Count);
+        urlClick.AmountEarned = amountEarned;
        
         return await _urlRepository.CreateUrlClick(urlClick);
     }
