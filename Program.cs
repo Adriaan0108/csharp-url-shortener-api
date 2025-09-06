@@ -10,8 +10,20 @@ using csharp_url_shortener_api.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Mvc;
 
 var builder = WebApplication.CreateBuilder(args);
+
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowAll", builder =>
+    {
+        builder
+            .AllowAnyOrigin()
+            .AllowAnyMethod()
+            .AllowAnyHeader();
+    });
+});
 
 builder.Services.AddControllers();
 
@@ -28,33 +40,43 @@ builder.Services.AddAuthentication(options =>
     })
     .AddJwtBearer(options =>
     {
+        options.MapInboundClaims = false; // prevents auto claim mapping
         options.TokenValidationParameters = new TokenValidationParameters
         {
             ValidateIssuer = false, // true in production
             ValidateAudience = false, // true in production
             ValidateLifetime = true,
             ValidateIssuerSigningKey = true,
-            ValidIssuer = builder.Configuration["Jwt:Issuer"],
-            ValidAudience = builder.Configuration["Jwt:Audience"],
+            // ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            // ValidAudience = builder.Configuration["Jwt:Audience"],
             IssuerSigningKey = new SymmetricSecurityKey(
                 Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
         };
 
         options.Events = new JwtBearerEvents
         {
-            OnChallenge = context =>
+            OnChallenge = async context =>
             {
-                context.HandleResponse();
-                context.Response.StatusCode = 401;
-                context.Response.ContentType = "application/json";
+                context.HandleResponse(); // prevent default response
 
-                var result = JsonSerializer.Serialize(new
+                context.Response.StatusCode = 401;
+                context.Response.ContentType = "application/problem+json";
+
+                var problemDetails = new ProblemDetails
                 {
-                    success = false,
-                    message = "Unauthorized. Token is missing or invalid."
+                    Type = "https://httpstatuses.com/401",
+                    Title = "Unauthorized",
+                    Status = 401,
+                    Detail = "Token is missing or invalid.",
+                    Instance = context.Request.Path
+                };
+
+                var result = JsonSerializer.Serialize(problemDetails, new JsonSerializerOptions
+                {
+                    PropertyNamingPolicy = JsonNamingPolicy.CamelCase
                 });
 
-                return context.Response.WriteAsync(result);
+                await context.Response.WriteAsync(result);
             }
         };
     });
@@ -66,8 +88,11 @@ builder.Services.AddHttpContextAccessor();
 builder.Services.Configure<JwtSettings>(builder.Configuration.GetSection("Jwt"));
 
 builder.Services.AddScoped<IUserRepository, UserRepository>();
+builder.Services.AddScoped<IUrlRepository, UrlRepository>();
 
 builder.Services.AddScoped<IAuthService, AuthService>();
+builder.Services.AddScoped<IUrlService, UrlService>();
+
 builder.Services.AddScoped<ICurrentUserService, CurrentUserService>();
 builder.Services.AddScoped<IJwtTokenService, JwtTokenService>();
 builder.Services.AddScoped<IPasswordHasherService, PasswordHasherService>();
@@ -81,6 +106,10 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("AllowAll");
+
+app.UseAuthentication();
 
 app.UseAuthorization();
 

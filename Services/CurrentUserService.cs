@@ -20,8 +20,7 @@ public class CurrentUserService : ICurrentUserService
 
         // Only look for the standard claim
         var userIdClaim = user.FindFirst(JwtRegisteredClaimNames.Sub);
-
-
+        
         if (userIdClaim == null || !int.TryParse(userIdClaim.Value, out var userId))
             throw new UnauthorizedAccessException("Invalid user ID in token");
 

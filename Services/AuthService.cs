@@ -1,4 +1,5 @@
-﻿using csharp_url_shortener_api.Dtos.AuthDtos;
+﻿using csharp_chat_api.Common.Exceptions;
+using csharp_url_shortener_api.Dtos.AuthDtos;
 using csharp_url_shortener_api.Helpers;
 using csharp_url_shortener_api.Interfaces.Repositories;
 using csharp_url_shortener_api.Interfaces.Services;
@@ -40,7 +41,7 @@ public class AuthService : IAuthService
     {
         var user = await _userRepository.GetUserByUsername(registerDto.Username);
     
-        // if (user != null) throw new ConflictException("Username already exists");
+        if (user != null) throw new ConflictException("Username already exists");
     
         var hashedPassword = _passwordHasher.HashPassword(registerDto.Password);
     
