@@ -7,6 +7,8 @@ public class UrlWithClickCountDto
     
     public string ShortUrl { get; set; }
     
+    public decimal AmountEarned { get; set; }
+    
     public int CreatedBy { get; set; }
     
     public int Id  { get; set; }

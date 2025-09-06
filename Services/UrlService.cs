@@ -74,7 +74,12 @@ public class UrlService : IUrlService
             .Select(u =>
             {
                 var dto = MappingProfile.ToUrlWithClickCountDto(u); 
-                dto.ClickCount = u.UrlClicks?.Count ?? 0;           
+            
+                dto.ClickCount = u.UrlClicks?.Count ?? 0;
+
+                // Sum the AmountEarned from each UrlClick
+                dto.AmountEarned = u.UrlClicks?.Sum(c => c.AmountEarned) ?? 0;
+            
                 return dto;
             })
             .ToList();
