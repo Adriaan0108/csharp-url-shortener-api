@@ -51,4 +51,13 @@ public class UrlController : ControllerBase
 
         return Ok(urls);
     }
+    
+    [HttpGet("profit-growth")]
+    [Authorize]
+    public async Task<IActionResult> GetProfitGrowthForCurrentMonth()
+    {
+        var growth = await _urlService.GetProfitGrowthForCurrentMonth();
+
+        return Ok(growth);
+    }
 }
